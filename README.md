@@ -1,8 +1,8 @@
 Wanted to become better in using Interfaces so asked ChatGPT to make me a task with vague instructions.
 
 **Task: Create a Simple Vehicle System**
-You need to create a basic system that manages different types of vehicles using classes and interfaces.
 
+You need to create a basic system that manages different types of vehicles using classes and interfaces.
 Steps (Vague Instructions)
 1. Define an Interface
     Create an interface that represents a vehicle.
@@ -17,7 +17,7 @@ Steps (Vague Instructions)
     In Main(), create objects of your vehicle classes.
     Store them in a collection (e.g., a List).
     Iterate through the collection and call the method(s) from the interface.
-[init]
+[  init  ]
 
 **Suggested Improvements**
 1. Extract Common Functionality into a Base Class
@@ -26,10 +26,7 @@ Steps (Vague Instructions)
     Instead of hardcoding Speed and Wheels, pass them through a constructor.
 3. Enhance Output Readability
     Add a Name property to better distinguish each vehicle in the console output.
-[2]
+[  2  ]
 
 **Further Challenges**
-1. Add a new method in the interface (e.g., Refuel()).
-2. Introduce another interface like IElectricVehicle with a BatteryLevel property.
-3. Make Speed immutable (only set in the constructor).
-4. Add a unique behavior for each vehicle type (e.g., Truck has LoadCargo()).
+
