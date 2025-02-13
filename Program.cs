@@ -9,7 +9,8 @@ class Program
             new Car(100),
             new Bike(50),
             new Truck(80),
-            new Bus(90)
+            new Bus(90),
+            new ElectricCar(99)
         };
 
         foreach (var vehicle in vehicles)
@@ -52,12 +53,9 @@ abstract class Vehicle : IVehicle // An abstract class cannot be instantiated di
         Speed = speed;
         Wheels = wheels;
     }
-    public virtual void Start()
-    {
-        Console.WriteLine($"{GetType().Name} has started.");
-        Console.WriteLine($"Speed: {Speed} hm/h, wheels: {Wheels}");
-    }
-    public virtual void Stop()
+    public abstract void Start(); // now must be implemented by subclasses. must be customized by each vehicle type. 
+    // when adding ElectricCar don’t have to modify IVehicle, just the class hierarchy.
+    public virtual void Stop() // default behavior
     {
         Console.WriteLine($"{GetType().Name} has stopped.");
     }
@@ -66,6 +64,12 @@ abstract class Vehicle : IVehicle // An abstract class cannot be instantiated di
 class Car : Vehicle
 {
     public Car(int speed) : base(speed, 4) { }
+
+    public override void Start()
+    {
+        Console.WriteLine("Car has started.");
+        Console.WriteLine($"Speed: {Speed}, Wheels: {Wheels}");
+    }
 
 }
 
@@ -89,14 +93,48 @@ class Bike : Vehicle
         Speed = 50;
         Wheels = 2;
      */
+    public override void Start()
+    {
+        Console.WriteLine("Bike has started.");
+        Console.WriteLine($"Speed: {Speed}, Wheels: {Wheels}");
+    }
 }
 
 class Truck : Vehicle
 {
     public Truck(int speed) : base(speed, 6) { }
+    public override void Start()
+    {
+        Console.WriteLine("Truck has started.");
+        Console.WriteLine($"Speed: {Speed}, Wheels: {Wheels}");
+    }
+
 }
 
 class Bus : Vehicle
 {
     public Bus(int speed) : base(speed, 8) { }
+    public override void Start()
+    {
+        Console.WriteLine("Bus has started.");
+        Console.WriteLine($"Speed: {Speed}, Wheels: {Wheels}");
+    }
+}
+
+class ElectricCar : Vehicle, IElectricVehicle
+{
+    public ElectricCar(int speed) : base(speed, 4) { }
+    public int BatteryLevel { get; set; } = 46;
+    public override void Start()
+    {
+        Console.WriteLine("Electric car has started.");
+        Console.WriteLine($"Battery level is at {BatteryLevel} %");
+        Console.WriteLine($"Speed: {Speed}, Wheels: {Wheels}");
+    }
+
+    public override void Stop() // adding custom behavior
+    {
+        Console.WriteLine("Electric car has stopped and is regenerating battery.");
+
+    }
 }
