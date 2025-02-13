@@ -17,7 +17,7 @@ Steps (Vague Instructions)
     In Main(), create objects of your vehicle classes.
     Store them in a collection (e.g., a List).
     Iterate through the collection and call the method(s) from the interface.
-[  init  ]
+( init )
 
 **Suggested Improvements**
 1. Extract Common Functionality into a Base Class
@@ -26,7 +26,12 @@ Steps (Vague Instructions)
     Instead of hardcoding Speed and Wheels, pass them through a constructor.
 3. Enhance Output Readability
     Add a Name property to better distinguish each vehicle in the console output.
-[  2  ]
+( 2 )
 
 **Further Challenges**
-
+1. Add another subclass, like Bus, with base(speed, 8).
+2. Make Start() abstract and override it in Car, Bike, and Truck.
+3. Add an IElectricVehicle interface with BatteryLevel and implement it in a new ElectricCar class.
+4. Override Stop() for ElectricCar
+    Since an electric car stops differently (e.g., regenerating energy), you can override Stop()
+( 3 )
