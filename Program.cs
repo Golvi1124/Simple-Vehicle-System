@@ -9,11 +9,12 @@ class Program
             new Car(100),
             new Bike(50),
             new Truck(80),
+            new Bus(90)
         };
 
         foreach (var vehicle in vehicles)
         {
-            Console.WriteLine($"Vehicle: {vehicle.GetType().Name}"); // ...why get type?
+            Console.WriteLine($"Vehicle: {vehicle.GetType().Name}"); // now dynamically printed
             vehicle.Start();
             vehicle.Stop();
             Console.WriteLine(new string('-', 30)); // Found new way to make output easier to read ^^
@@ -28,17 +29,26 @@ interface IVehicle
     void Start();
     void Stop();
 }
+
+interface IElectricVehicle
+{
+    int BatteryLevel { get; set; }
+}
 /* 
 Created a Base Class (Vehicle)
 Now Car, Bike, and Truck inherit from Vehicle, reducing code repetition.
  */
-abstract class Vehicle : IVehicle // .....why abstract class?
+abstract class Vehicle : IVehicle // An abstract class cannot be instantiated directly. It is meant to be a blueprint for other classes.
+// Vehicle has common properties for all vehicle types (Speed, Wheels, Start(), Stop()).
+// However, we don’t want to create a generic Vehicle object because every vehicle should be either a Car, Bike, or Truck.
 {
-    public int Speed { get; set; }
-    public int Wheels { get; } // .....why only getter?
+    public int Speed { get; set; } // get and set - to be able to change later. If want to assig only during construction, use public int Speed { get; init; }
+    public int Wheels { get; } // using without Setter to make property read-only/fixed after initialization. (e.g. car always has 4 wheels)
 
-    protected Vehicle(int speed, int wheels) // .....why protected? and why in general?
-    {
+    protected Vehicle(int speed, int wheels) // A protected constructor means that only derived classes (subclasses) can call it.
+    { // The Vehicle class is a base class (it should not be instantiated directly).
+      // Car, Bike, and Truck are subclasses that should set values for speed and wheels.
+      // The renaming avoids confusion between the constructor parameters (speed, wheels) and the class properties (Speed, Wheels).
         Speed = speed;
         Wheels = wheels;
     }
@@ -55,15 +65,38 @@ abstract class Vehicle : IVehicle // .....why abstract class?
 
 class Car : Vehicle
 {
-    public Car(int speed) : base(speed, 4) {} // ....what does it all mean?
+    public Car(int speed) : base(speed, 4) { }
+
 }
 
 class Bike : Vehicle
 {
-    public Bike(int speed) : base(speed, 2) {}
+    public Bike(int speed) : base(speed, 2) { }
+    /* 
+    Bike constructor:
+    It takes one parameter (speed) but does not define wheels explicitly.
+    The base(speed, 2) part calls the Vehicle constructor, passing:
+        - speed (whatever value was provided when creating the Bike)
+        - 2 (because a bike always has 2 wheels)
+
+    What does base(speed, 2) do?
+    - Call the Vehicle constructor.
+    - Pass speed and 2 to the base constructor (Vehicle(int speed, int wheels)).
+    - Assign those values to the Vehicle class properties (Speed and Wheels).
+    - 50 is passed to the Bike constructor.
+    - The Bike constructor doesn't do anything itself, but it forwards the values to the Vehicle constructor: base(50, 2);
+    - This assigns:
+        Speed = 50;
+        Wheels = 2;
+     */
 }
 
 class Truck : Vehicle
 {
-    public Truck(int speed) : base(speed, 6) {}
+    public Truck(int speed) : base(speed, 6) { }
+}
+
+class Bus : Vehicle
+{
+    public Bus(int speed) : base(speed, 8) { }
 }
