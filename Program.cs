@@ -4,19 +4,19 @@ class Program
 {
     static void Main(string[] args)
     {
-        Car car = new Car();
-        Bike bike = new Bike();
-        Truck truck = new Truck();
-
-        List<IVehicle> vehicles = new List<IVehicle>();
-        vehicles.Add(car);
-        vehicles.Add(bike);
-        vehicles.Add(truck);
+        List<IVehicle> vehicles = new List<IVehicle>
+        {
+            new Car(100),
+            new Bike(50),
+            new Truck(80),
+        };
 
         foreach (var vehicle in vehicles)
         {
+            Console.WriteLine($"Vehicle: {vehicle.GetType().Name}"); // ...why get type?
             vehicle.Start();
             vehicle.Stop();
+            Console.WriteLine(new string('-', 30)); // Found new way to make output easier to read ^^
         }
     }
 }
@@ -24,58 +24,46 @@ class Program
 interface IVehicle
 {
     int Speed { get; set; }
-    int Wheels { get; set; }
+    int Wheels { get; }
     void Start();
     void Stop();
 }
-
-class Car : IVehicle
+/* 
+Created a Base Class (Vehicle)
+Now Car, Bike, and Truck inherit from Vehicle, reducing code repetition.
+ */
+abstract class Vehicle : IVehicle // .....why abstract class?
 {
-    public int Speed { get; set; } = 100;
-    public int Wheels { get; set; } = 4;
+    public int Speed { get; set; }
+    public int Wheels { get; } // .....why only getter?
 
-    public void Start()
+    protected Vehicle(int speed, int wheels) // .....why protected? and why in general?
     {
-        Console.WriteLine("Car has started.");
-        Console.WriteLine($"Speed: {Speed}");
+        Speed = speed;
+        Wheels = wheels;
     }
-
-    public void Stop()
+    public virtual void Start()
     {
-        Console.WriteLine("Car has stopped.");
+        Console.WriteLine($"{GetType().Name} has started.");
+        Console.WriteLine($"Speed: {Speed} hm/h, wheels: {Wheels}");
+    }
+    public virtual void Stop()
+    {
+        Console.WriteLine($"{GetType().Name} has stopped.");
     }
 }
 
-class Bike : IVehicle
+class Car : Vehicle
 {
-    public int Speed { get; set; } = 50;
-    public int Wheels { get; set; } = 2;
-
-    public void Start()
-    {
-        Console.WriteLine("Bike has started.");
-        Console.WriteLine($"Speed: {Speed}");
-    }
-
-    public void Stop()
-    {
-        Console.WriteLine("Bike has stopped.");
-    }
+    public Car(int speed) : base(speed, 4) {} // ....what does it all mean?
 }
 
-class Truck : IVehicle
+class Bike : Vehicle
 {
-    public int Speed { get; set; } = 80;
-    public int Wheels { get; set; } = 6;
+    public Bike(int speed) : base(speed, 2) {}
+}
 
-    public void Start()
-    {
-        Console.WriteLine("Truck has started.");
-        Console.WriteLine($"Speed: {Speed}");
-    }
-
-    public void Stop()
-    {
-        Console.WriteLine("Truck has stopped.");
-    }
+class Truck : Vehicle
+{
+    public Truck(int speed) : base(speed, 6) {}
 }
